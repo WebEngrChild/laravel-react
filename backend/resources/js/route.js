@@ -1,18 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-    BrowserRouter,
-    Route,
-    Routes,
-  } from 'react-router-dom';
-import Example from './pages/Example';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 
   function App() {
     return (
         <div>
             <Routes>
-                <Route path='/example' element={<Example />} />
                 <Route path='/' element={<Home />} />
             </Routes>
         </div>
