@@ -3,7 +3,7 @@ import React from 'react';
 //material-ui取得
 import { Button, Card } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-//コンポーネント取得
+//各コンポーネント取得
 import MainTable from '../components/MainTable';
 
 //スタイルの定義
@@ -44,7 +44,7 @@ const classes = useStyles();
 <div>
     <h1>タスク管理</h1>
         <Card className={classes.card}>
-            {/* テーブル部分の定義 */}
+            {/* データを配下のcomponentに渡す */}
             <MainTable headerList={headerList} rows={rows} />
         </Card>
 </div>

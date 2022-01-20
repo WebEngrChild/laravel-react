@@ -11478,7 +11478,7 @@ __webpack_require__.r(__webpack_exports__);
  //material-ui取得
 
 
- //コンポーネント取得
+ //各コンポーネント取得
 
  //スタイルの定義
 
@@ -11563,7 +11563,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_Home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/Home */ "./resources/js/pages/Home.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
+ //React Routerを取得
 
+ //各コンポーネントを取得
 
 
 
