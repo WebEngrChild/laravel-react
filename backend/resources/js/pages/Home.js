@@ -8,6 +8,7 @@ import { Button, Card } from '@material-ui/core';
 import purple from '@material-ui/core/colors/purple';
 //各コンポーネント取得
 import MainTable from '../components/MainTable';
+import PostFrom from '../components/PostFrom';
 
 //スタイルの定義
 const useStyles = makeStyles((theme) => createStyles({
@@ -33,12 +34,10 @@ function Home() {
     //postsの状態を管理する
     const [posts, setPosts] = useState([]);
 
-    //画面に到着したらgetPostsDataを呼ぶ
-    useEffect(() => {
-        getPostsData();
-    },[])
+    //フォームの入力値を管理するステートの定義
+    const [formData, setFormData] = useState({name:'', content:''});
 
-    //一覧情報を取得しステートpostsにセットする
+    //関数：一覧情報を取得しステートpostsにセットする
     const getPostsData = () => {
         axios
             .get('/api/posts')
@@ -48,6 +47,47 @@ function Home() {
             })
             .catch(() => {
                 console.log('通信に失敗しました');
+            });
+    }
+
+    //初期画面に到着したらgetPostsDataを呼ぶ
+    useEffect(() => {
+        getPostsData();
+    },[])
+
+    //関数：入力がされたら（都度）入力値を変更する
+    const inputChange = (e) => {
+        const key = e.target.name;
+        const value = e.target.value;
+        //{name:'', content:''}の形で変化があった部分のみに更新をかける
+        formData[key] = value;
+        //React側で差分比較ができるようにdeep copyを行う
+        let data = Object.assign({}, formData);
+        setFormData(data);
+    }
+
+    //関数：登録ボタンが押下時のデータ登録
+    const createPost = async() => {
+        //空だと弾く
+        if(formData == ''){
+            return;
+        }
+        //入力値を投げる
+        await axios
+            .post('/api/post/create', {
+                name: formData.name,
+                content: formData.content
+            })
+            .then((res) => {
+                //DeepCopy
+                const tempPosts = posts
+                //返り値を現在のpostsに追加する
+                tempPosts.push(res.data);
+                setPosts(tempPosts)
+                setFormData('');
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
@@ -82,6 +122,10 @@ function Home() {
     return (
         <div>
             <h1>タスク管理</h1>
+                <Card className={classes.card}>
+                    {/* 状態管理と入力があった際の更新用、 登録処理関数をpropsとして渡す*/}
+                    <PostFrom data={formData} inputChange={inputChange} btnFunc={createPost} />
+                </Card>
                 <Card className={classes.card}>
                     {/* データを配下のcomponentに渡す */}
                     <MainTable headerList={headerList} rows={rows} />
