@@ -23,21 +23,6 @@ const useStyles = makeStyles((theme) => createStyles({
     },
 }));
 
-//headrListの下あたりにrowsを定義する
-let rows = [
-    {
-        name: "モーリー",
-        content: "肩トレ",
-        editBtn: <Button color="secondary" variant="contained">編集</Button>,
-        deleteBtn: <Button color="primary" variant="contained">完了</Button>,
-    },{
-        name: "ドンキーコング",
-        content: "バナナ補給",
-        editBtn: <Button color="secondary" variant="contained">編集</Button>,
-        deleteBtn: <Button color="primary" variant="contained">完了</Button>,
-    },
-];
-
 //ヘッダーのコンテンツ用の配列定義
 const headerList = ['名前', 'タスク内容', '編集', '完了'];
 
@@ -65,6 +50,34 @@ function Home() {
                 console.log('通信に失敗しました');
             });
     }
+
+    // let rows = [
+    //     {
+    //         name: "モーリー",
+    //         content: "肩トレ",
+    //         editBtn: <Button color="secondary" variant="contained">編集</Button>,
+    //         deleteBtn: <Button color="primary" variant="contained">完了</Button>,
+    //     },{
+    //         name: "ドンキーコング",
+    //         content: "バナナ補給",
+    //         editBtn: <Button color="secondary" variant="contained">編集</Button>,
+    //         deleteBtn: <Button color="primary" variant="contained">完了</Button>,
+    //     },
+    // ];
+
+    /**
+     * 空配列rowsにmap中のpostのデータを整形して配列の要素として追加
+     *バックエンド側から取得したデータ(posts)をフロントエンド側で使う形に整形する変数(rows)に加工し表示
+     */
+    let rows = [];
+    posts.map((post) =>
+        rows.push({
+            name: post.name,
+            content: post.content,
+            editBtn: <Button color="secondary" variant="contained">編集</Button>,
+            deleteBtn: <Button color="primary" variant="contained">完了</Button>,
+        })
+    );
 
     return (
         <div>
