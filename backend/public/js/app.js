@@ -19888,6 +19888,8 @@ var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_6__["defaul
 var headerList = ['名前', 'タスク内容', '編集', '完了']; //関数：コンポーネント定義
 
 function Home() {
+  var _this = this;
+
   //定義したスタイルを利用するための設定
   var classes = useStyles(); //バックエンドから渡されるpostsステートの定義
 
@@ -19974,6 +19976,37 @@ function Home() {
     return function createPost() {
       return _ref.apply(this, arguments);
     };
+  }(); //関数：データ削除
+
+
+  var deletePost = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(post) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/api/delete', {
+                id: post.id
+              }).then(function (res) {
+                _this.setState({
+                  posts: res.posts
+                });
+              })["catch"](function (error) {
+                console.log(error);
+              });
+
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function deletePost(_x) {
+      return _ref2.apply(this, arguments);
+    };
   }(); // let rows = [
   //     {
   //         name: "モーリー",
@@ -19998,15 +20031,21 @@ function Home() {
     return rows.push({
       name: post.name,
       content: post.content,
+      // 別ページ（別コンポーネントで編集を実行）
       editBtn: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_9__["default"], {
         color: "secondary",
         variant: "contained",
         href: "/post/edit/".concat(post.id),
         children: "\u7DE8\u96C6"
-      }, post.id),
+      }),
+      //クリックしたタイミングで削除処理を実行
       deleteBtn: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_9__["default"], {
         color: "primary",
         variant: "contained",
+        href: "/",
+        onClick: function onClick() {
+          return deletePost(post);
+        },
         children: "\u5B8C\u4E86"
       })
     });
@@ -20093,7 +20132,8 @@ function PostEdit() {
   }),
       _useState2 = _slicedToArray(_useState, 2),
       editData = _useState2[0],
-      setEditData = _useState2[1];
+      setEditData = _useState2[1]; //画面描画時に編集対象データを取得
+
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getEditData();

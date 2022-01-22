@@ -93,6 +93,22 @@ function Home() {
             });
     }
 
+    //関数：データ削除
+    const deletePost = async (post) => {
+        await axios
+            .post('/api/delete', {
+            id: post.id
+        })
+        .then((res) => {
+            this.setState({
+                posts: res.posts
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
     // let rows = [
     //     {
     //         name: "モーリー",
@@ -115,8 +131,10 @@ function Home() {
         rows.push({
             name: post.name,
             content: post.content,
-            editBtn: <Button color="secondary" variant="contained" key={post.id} href={`/post/edit/${post.id}`}>編集</Button>,
-            deleteBtn: <Button color="primary" variant="contained">完了</Button>,
+            // 別ページ（別コンポーネントで編集を実行）
+            editBtn: <Button color="secondary" variant="contained" href={`/post/edit/${post.id}`}>編集</Button>,
+            //クリックしたタイミングで削除処理を実行
+            deleteBtn: <Button color="primary" variant="contained" href="/" onClick={() => deletePost(post)}>完了</Button>,
         })
     );
 
@@ -128,7 +146,7 @@ function Home() {
                     <PostFrom data={formData} inputChange={inputChange} btnFunc={createPost} />
                 </Card>
                 <Card className={classes.card}>
-                    {/* データを配下のcomponentに渡す */}
+                    {/* rowsデータを配下のcomponentに渡す */}
                     <MainTable headerList={headerList} rows={rows} />
                 </Card>
         </div>

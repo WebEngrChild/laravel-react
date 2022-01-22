@@ -12,8 +12,6 @@ const useStyles = makeStyles((theme) => createStyles({
     },
 }));
 
-
-
 //関数：関数コンポーネント
 function PostEdit() {
     const classes = useStyles();
@@ -22,6 +20,7 @@ function PostEdit() {
 
     const [editData, setEditData] = useState({name:'', content:''});
 
+    //画面描画時に編集対象データを取得
     useEffect(() => {
         getEditData();
       }, [])
