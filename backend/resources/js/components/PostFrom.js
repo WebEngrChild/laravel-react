@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => createStyles({
 function PostFrom(props) {
     const classes = useStyles();
     //Formdataと更新用関数をPropsで受ける
-    const { data, inputChange, btnFunc} = props;
+    const { formData, inputChange, btnFunc} = props;
 
     return (
         <form>
@@ -21,7 +21,7 @@ function PostFrom(props) {
                 variant="outlined"
                 className={classes.textArea}
                 name="name"
-                value={data.name}
+                value={formData.name}
                 onChange={inputChange}/>
             <TextField
                 id="content"
@@ -29,7 +29,7 @@ function PostFrom(props) {
                 variant="outlined"
                 className={classes.textArea}
                 name="content"
-                value={data.content}
+                value={formData.content}
                 onChange={inputChange} />
            <Button color="primary" variant="contained" href="/" onClick={btnFunc}>登録</Button>
         </form>

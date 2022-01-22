@@ -19780,7 +19780,7 @@ var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["defaul
 function PostFrom(props) {
   var classes = useStyles(); //Formdataと更新用関数をPropsで受ける
 
-  var data = props.data,
+  var formData = props.formData,
       inputChange = props.inputChange,
       btnFunc = props.btnFunc;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("form", {
@@ -19790,7 +19790,7 @@ function PostFrom(props) {
       variant: "outlined",
       className: classes.textArea,
       name: "name",
-      value: data.name,
+      value: formData.name,
       onChange: inputChange
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["default"], {
       id: "content",
@@ -19798,7 +19798,7 @@ function PostFrom(props) {
       variant: "outlined",
       className: classes.textArea,
       name: "content",
-      value: data.content,
+      value: formData.content,
       onChange: inputChange
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["default"], {
       color: "primary",
@@ -19885,11 +19885,11 @@ var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_6__["defaul
   });
 }); //ヘッダーのコンテンツ用の配列定義
 
-var headerList = ['名前', 'タスク内容', '編集', '完了'];
+var headerList = ['名前', 'タスク内容', '編集', '完了']; //関数：コンポーネント定義
 
 function Home() {
   //定義したスタイルを利用するための設定
-  var classes = useStyles(); //postsの状態を管理する
+  var classes = useStyles(); //バックエンドから渡されるpostsステートの定義
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
@@ -19909,7 +19909,6 @@ function Home() {
   var getPostsData = function getPostsData() {
     axios__WEBPACK_IMPORTED_MODULE_2___default().get('/api/posts').then(function (response) {
       setPosts(response.data);
-      console.log(response.data); //取得データ確認用のconsole.log()
     })["catch"](function () {
       console.log('通信に失敗しました');
     });
@@ -19918,7 +19917,7 @@ function Home() {
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     getPostsData();
-  }, []); //関数：入力がされたら（都度）入力値を変更する
+  }, []); //関数：入力がされたら（都度）入力値を変更する。'e'にはon changeイベントのobjが入る。
 
   var inputChange = function inputChange(e) {
     var key = e.target.name;
@@ -19926,7 +19925,8 @@ function Home() {
 
     formData[key] = value; //React側で差分比較ができるようにdeep copyを行う
 
-    var data = Object.assign({}, formData);
+    var data = Object.assign({}, formData); //ステート更新
+
     setFormData(data);
   }; //関数：登録ボタンが押下時のデータ登録
 
@@ -19950,11 +19950,13 @@ function Home() {
                 name: formData.name,
                 content: formData.content
               }).then(function (res) {
-                //DeepCopy
-                var tempPosts = posts; //返り値を現在のpostsに追加する
+                //現在のpostsをDeepCopy
+                var tempPosts = posts; //現在のpostsに返り値をに追加する
 
-                //返り値を現在のpostsに追加する
-                tempPosts.push(res.data);
+                //現在のpostsに返り値をに追加する
+                tempPosts.push(res.data); //ステート更新
+
+                //ステート更新
                 setPosts(tempPosts);
                 setFormData('');
               })["catch"](function (error) {
@@ -19987,8 +19989,7 @@ function Home() {
   // ];
 
   /**
-   * 空配列rowsにmap中のpostのデータを整形して配列の要素として追加
-   *バックエンド側から取得したデータ(posts)をフロントエンド側で使う形に整形する変数(rows)に加工し表示
+   *バックエンド側から取得したpostsをフロントエンド側で使うrowsに加工し表示
    */
 
 
@@ -20015,7 +20016,7 @@ function Home() {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["default"], {
       className: classes.card,
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_PostFrom__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        data: formData,
+        formData: formData,
         inputChange: inputChange,
         btnFunc: createPost
       })
@@ -20052,6 +20053,7 @@ __webpack_require__.r(__webpack_exports__);
 
  //各コンポーネントを取得
 
+ //関数：起点となるAppコンポーネント関数の呼び出し
 
 
 
@@ -20064,7 +20066,8 @@ function App() {
       })
     })
   });
-}
+} //描画
+
 
 react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.BrowserRouter, {
   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(App, {})

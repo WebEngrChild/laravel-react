@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme) => createStyles({
 //ヘッダーのコンテンツ用の配列定義
 const headerList = ['名前', 'タスク内容', '編集', '完了'];
 
+//関数：コンポーネント定義
 function Home() {
     //定義したスタイルを利用するための設定
     const classes = useStyles();
 
-    //postsの状態を管理する
+    //バックエンドから渡されるpostsステートの定義
     const [posts, setPosts] = useState([]);
 
     //フォームの入力値を管理するステートの定義
@@ -43,7 +44,6 @@ function Home() {
             .get('/api/posts')
             .then(response => {
                 setPosts(response.data);
-                console.log(response.data); //取得データ確認用のconsole.log()
             })
             .catch(() => {
                 console.log('通信に失敗しました');
@@ -55,7 +55,7 @@ function Home() {
         getPostsData();
     },[])
 
-    //関数：入力がされたら（都度）入力値を変更する
+    //関数：入力がされたら（都度）入力値を変更する。'e'にはon changeイベントのobjが入る。
     const inputChange = (e) => {
         const key = e.target.name;
         const value = e.target.value;
@@ -63,6 +63,7 @@ function Home() {
         formData[key] = value;
         //React側で差分比較ができるようにdeep copyを行う
         let data = Object.assign({}, formData);
+        //ステート更新
         setFormData(data);
     }
 
@@ -79,10 +80,11 @@ function Home() {
                 content: formData.content
             })
             .then((res) => {
-                //DeepCopy
+                //現在のpostsをDeepCopy
                 const tempPosts = posts
-                //返り値を現在のpostsに追加する
+                //現在のpostsに返り値をに追加する
                 tempPosts.push(res.data);
+                 //ステート更新
                 setPosts(tempPosts)
                 setFormData('');
             })
@@ -106,8 +108,7 @@ function Home() {
     // ];
 
     /**
-     * 空配列rowsにmap中のpostのデータを整形して配列の要素として追加
-     *バックエンド側から取得したデータ(posts)をフロントエンド側で使う形に整形する変数(rows)に加工し表示
+     *バックエンド側から取得したpostsをフロントエンド側で使うrowsに加工し表示
      */
     let rows = [];
     posts.map((post) =>
@@ -123,8 +124,8 @@ function Home() {
         <div>
             <h1>タスク管理</h1>
                 <Card className={classes.card}>
-                    {/* 状態管理と入力があった際の更新用、 登録処理関数をpropsとして渡す*/}
-                    <PostFrom data={formData} inputChange={inputChange} btnFunc={createPost} />
+                    {/* 状態管理/入力時の更新関数/登録処理関数をpropsとして渡す*/}
+                    <PostFrom formData={formData} inputChange={inputChange} btnFunc={createPost} />
                 </Card>
                 <Card className={classes.card}>
                     {/* データを配下のcomponentに渡す */}
