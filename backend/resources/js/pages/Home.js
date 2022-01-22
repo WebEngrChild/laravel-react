@@ -115,7 +115,7 @@ function Home() {
         rows.push({
             name: post.name,
             content: post.content,
-            editBtn: <Button color="secondary" variant="contained">編集</Button>,
+            editBtn: <Button color="secondary" variant="contained" key={post.id} href={`/post/edit/${post.id}`}>編集</Button>,
             deleteBtn: <Button color="primary" variant="contained">完了</Button>,
         })
     );
@@ -125,7 +125,7 @@ function Home() {
             <h1>タスク管理</h1>
                 <Card className={classes.card}>
                     {/* 状態管理/入力時の更新関数/登録処理関数をpropsとして渡す*/}
-                    <PostFrom formData={formData} inputChange={inputChange} btnFunc={createPost} />
+                    <PostFrom data={formData} inputChange={inputChange} btnFunc={createPost} />
                 </Card>
                 <Card className={classes.card}>
                     {/* データを配下のcomponentに渡す */}
