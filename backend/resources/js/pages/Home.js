@@ -1,8 +1,11 @@
-
-import React from 'react';
+//1行で複数をインポート
+import React, { useState, useEffect }  from 'react';
+//API連携用を取得
+import axios from 'axios';
 //material-ui取得
-import { Button, Card } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { Button, Card } from '@material-ui/core';
+import purple from '@material-ui/core/colors/purple';
 //各コンポーネント取得
 import MainTable from '../components/MainTable';
 
@@ -38,15 +41,40 @@ let rows = [
 //ヘッダーのコンテンツ用の配列定義
 const headerList = ['名前', 'タスク内容', '編集', '完了'];
 
-//定義したスタイルを利用するための設定
-const classes = useStyles();
+function Home() {
+    //定義したスタイルを利用するための設定
+    const classes = useStyles();
 
-<div>
-    <h1>タスク管理</h1>
-        <Card className={classes.card}>
-            {/* データを配下のcomponentに渡す */}
-            <MainTable headerList={headerList} rows={rows} />
-        </Card>
-</div>
+    //postsの状態を管理する
+    const [posts, setPosts] = useState([]);
+
+    //画面に到着したらgetPostsDataを呼ぶ
+    useEffect(() => {
+        getPostsData();
+    },[])
+
+    //一覧情報を取得しステートpostsにセットする
+    const getPostsData = () => {
+        axios
+            .get('/api/posts')
+            .then(response => {
+                setPosts(response.data);
+                console.log(response.data); //取得データ確認用のconsole.log()
+            })
+            .catch(() => {
+                console.log('通信に失敗しました');
+            });
+    }
+
+    return (
+        <div>
+            <h1>タスク管理</h1>
+                <Card className={classes.card}>
+                    {/* データを配下のcomponentに渡す */}
+                    <MainTable headerList={headerList} rows={rows} />
+                </Card>
+        </div>
+    )
+}
 
 export default Home;
