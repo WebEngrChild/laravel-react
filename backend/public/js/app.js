@@ -19905,7 +19905,7 @@ function Home() {
   }),
       _useState4 = _slicedToArray(_useState3, 2),
       formData = _useState4[0],
-      setFormData = _useState4[1]; //関数：一覧情報を取得しステートpostsにセットする
+      setFormData = _useState4[1]; //関数：バックエンドから一覧情報を取得しステートpostsにセットする
 
 
   var getPostsData = function getPostsData() {
@@ -19914,7 +19914,7 @@ function Home() {
     })["catch"](function () {
       console.log('通信に失敗しました');
     });
-  }; //初期画面に到着したらgetPostsDataを呼ぶ
+  }; //初期画面に到着したらgetPostsDataを読んでpostsにセットする
 
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -19930,7 +19930,7 @@ function Home() {
     var data = Object.assign({}, formData); //ステート更新
 
     setFormData(data);
-  }; //関数：登録ボタンが押下時のデータ登録
+  }; //関数：登録ボタンの押下時にデータ登録
 
 
   var createPost = /*#__PURE__*/function () {
@@ -19956,10 +19956,12 @@ function Home() {
                 var tempPosts = posts; //現在のpostsに返り値をに追加する
 
                 //現在のpostsに返り値をに追加する
-                tempPosts.push(res.data); //ステート更新
+                tempPosts.push(res.data); //postsステート更新
 
-                //ステート更新
-                setPosts(tempPosts);
+                //postsステート更新
+                setPosts(tempPosts); //入力値を空白にする
+
+                //入力値を空白にする
                 setFormData('');
               })["catch"](function (error) {
                 console.log(error);
@@ -19989,6 +19991,7 @@ function Home() {
               return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/api/delete', {
                 id: post.id
               }).then(function (res) {
+                // クラス型での書き方。現在はフック型(getPostsData)同様に書く。
                 _this.setState({
                   posts: res.posts
                 });
@@ -20022,7 +20025,7 @@ function Home() {
   // ];
 
   /**
-   *バックエンド側から取得したpostsをフロントエンド側で使うrowsに加工し表示
+   *バックエンド側から取得したpostsをフロントエンド側で使うオブジェクト型rowsに加工し表示
    */
 
 
@@ -20104,6 +20107,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+ //react routerでパラメータを渡す際に利用するフック
 
 
 
@@ -20121,10 +20125,11 @@ var useStyles = (0,_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["defaul
 }); //関数：関数コンポーネント
 
 function PostEdit() {
-  var classes = useStyles();
+  var classes = useStyles(); //{id}は<Route path='/post/edit/:id'と合わせる必要がある
 
   var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams)(),
-      id = _useParams.id;
+      id = _useParams.id; //編集画面用の入力ステート
+
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     name: '',
@@ -20143,12 +20148,12 @@ function PostEdit() {
     axios.post('/api/edit', {
       id: id
     }).then(function (res) {
-      //編集対象ステータスに入れる
+      //編集対象ステートに入れる
       setEditData(res.data);
     })["catch"](function () {
       console.log('通信に失敗しました');
     });
-  } //関数：編集対象のデータをlaravlで更新
+  } //関数：編集対象のステートデータをlaravlで更新
 
 
   function updatePost() {
@@ -20162,17 +20167,18 @@ function PostEdit() {
       name: editData.name,
       content: editData.content
     }).then(function (res) {
-      //結果を編集用ステータスに再設定
+      //結果を編集用ステートに再設定
       setEditData(res.data);
     })["catch"](function (error) {
       console.log(error);
     });
-  } //関数：入力フォーム内のデータを編集用ステータスに反映
+  } //関数：入力フォーム内のデータを編集用ステートに反映
 
 
   function inputChange(e) {
     var key = e.target.name;
-    var value = e.target.value;
+    var value = e.target.value; //{name:'', content:''}の形で変化があった部分のみに更新をかける
+
     editData[key] = value;
     var data = Object.assign({}, editData);
     setEditData(data);

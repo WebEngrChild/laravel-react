@@ -13,6 +13,7 @@ import PostEdit from './pages/PostEdit';
             {/* ルーティング定義とコンポーネント呼び出し */}
             <Routes>
                 <Route path='/' element={<Home />} />
+                {/* ':id'の形は受け取る側と合わせる必要がある */}
                 <Route path='/post/edit/:id' element={<PostEdit />} />
             </Routes>
         </div>

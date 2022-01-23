@@ -38,7 +38,7 @@ function Home() {
     //フォームの入力値を管理するステートの定義
     const [formData, setFormData] = useState({name:'', content:''});
 
-    //関数：一覧情報を取得しステートpostsにセットする
+    //関数：バックエンドから一覧情報を取得しステートpostsにセットする
     const getPostsData = () => {
         axios
             .get('/api/posts')
@@ -50,7 +50,7 @@ function Home() {
             });
     }
 
-    //初期画面に到着したらgetPostsDataを呼ぶ
+    //初期画面に到着したらgetPostsDataを読んでpostsにセットする
     useEffect(() => {
         getPostsData();
     },[])
@@ -67,13 +67,13 @@ function Home() {
         setFormData(data);
     }
 
-    //関数：登録ボタンが押下時のデータ登録
+    //関数：登録ボタンの押下時にデータ登録
     const createPost = async() => {
-        //空だと弾く
+        //オブジェクトの中身が空"緩い等価"だと弾く
         if(formData == ''){
             return;
         }
-        //入力値を投げる
+        //入力でバックエンドを叩いて新規作成
         await axios
             .post('/api/post/create', {
                 name: formData.name,
@@ -84,8 +84,9 @@ function Home() {
                 const tempPosts = posts
                 //現在のpostsに返り値をに追加する
                 tempPosts.push(res.data);
-                 //ステート更新
+                //postsステート更新
                 setPosts(tempPosts)
+                //入力値を空白にする
                 setFormData('');
             })
             .catch(error => {
@@ -96,10 +97,12 @@ function Home() {
     //関数：データ削除
     const deletePost = async (post) => {
         await axios
+            // バックエンドAPIにidを渡して削除
             .post('/api/delete', {
             id: post.id
         })
         .then((res) => {
+            // クラス型での書き方。現在はフック型(getPostsData)同様に書く。
             this.setState({
                 posts: res.posts
             });
@@ -124,7 +127,7 @@ function Home() {
     // ];
 
     /**
-     *バックエンド側から取得したpostsをフロントエンド側で使うrowsに加工し表示
+     *バックエンド側から取得したpostsをフロントエンド側で使うオブジェクト型rowsに加工し表示
      */
     let rows = [];
     posts.map((post) =>
