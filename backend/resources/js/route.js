@@ -22,6 +22,7 @@ import PostEdit from './pages/PostEdit';
 
 //描画
   ReactDOM.render((
+    //  <BrowserRouter>で挟むことで<App />内でrouteが利用できるようになる
     <BrowserRouter>
       <App />
     </BrowserRouter>

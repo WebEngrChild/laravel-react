@@ -61,7 +61,7 @@ function Home() {
         const value = e.target.value;
         //{name:'', content:''}の形で変化があった部分のみに更新をかける
         formData[key] = value;
-        //React側で差分比較ができるようにdeep copyを行う
+        //React側で差分比較ができるようにdeep copyを行う。第一引数を{}にすることでクローンができる。
         let data = Object.assign({}, formData);
         //ステート更新
         setFormData(data);
