@@ -38,7 +38,12 @@ function Home() {
     //フォームの入力値を管理するステートの定義
     const [formData, setFormData] = useState({name:'', content:''});
 
-    //関数：バックエンドから一覧情報を取得しステートpostsにセットする
+    //初期画面に到着したらgetPostsDataを読んでpostsにセットする
+    useEffect(() => {
+        getPostsData();
+    },[])
+
+    //①関数：バックエンドから一覧情報を取得しステートpostsにセットする
     const getPostsData = () => {
         axios
             .get('/api/posts')
@@ -50,12 +55,7 @@ function Home() {
             });
     }
 
-    //初期画面に到着したらgetPostsDataを読んでpostsにセットする
-    useEffect(() => {
-        getPostsData();
-    },[])
-
-    //関数：入力がされたら（都度）入力値を変更する。'e'にはon changeイベントのobjが入る。
+    //②関数：入力がされたら（都度）入力値を変更する。'e'にはon changeイベントのobjが入る。
     const inputChange = (e) => {
         const key = e.target.name;
         const value = e.target.value;
@@ -67,7 +67,7 @@ function Home() {
         setFormData(data);
     }
 
-    //関数：登録ボタンの押下時にデータ登録
+    //③関数：登録ボタンの押下時にデータ登録
     const createPost = async() => {
         //オブジェクトの中身が空"緩い等価"だと弾く
         if(formData == ''){
@@ -94,7 +94,7 @@ function Home() {
             });
     }
 
-    //関数：データ削除
+    //④関数：データ削除
     const deletePost = async (post) => {
         await axios
             // バックエンドAPIにidを渡して削除
