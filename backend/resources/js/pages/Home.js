@@ -146,11 +146,11 @@ function Home() {
         <div>
             <h1>タスク管理</h1>
                 <Card className={classes.card}>
-                    {/* 状態管理/入力時の更新関数/登録処理関数をpropsとして渡す*/}
+                    {/* fomrComponentに状態管理/入力時の更新関数/登録処理関数をpropsとして渡す*/}
                     <PostFrom data={formData} inputChange={inputChange} btnFunc={createPost} />
                 </Card>
                 <Card className={classes.card}>
-                    {/* rowsデータを配下のcomponentに渡す */}
+                    {/* ヘッダーとテーブルデータをtableConmponentに渡す */}
                     <MainTable headerList={headerList} rows={rows} />
                 </Card>
         </div>

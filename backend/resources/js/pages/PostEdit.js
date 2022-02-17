@@ -68,6 +68,7 @@ function PostEdit() {
         const value = e.target.value;
         //{name:'', content:''}の形で変化があった部分のみに更新をかける
         editData[key] = value;
+        //React側で差分比較ができるようにdeep copyを行う。第一引数を{}にすることでクローンができる。
         let data = Object.assign({}, editData);
         setEditData(data);
     }
